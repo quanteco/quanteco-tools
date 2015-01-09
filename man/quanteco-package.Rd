@@ -12,8 +12,8 @@ Functions and tests for spatioautocorrelation, model averaging, data visualizati
 \tabular{ll}{
 Package: \tab quanteco\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2014-12-19\cr
+Version: \tab 0.1\cr
+Date: \tab 2015-01-09\cr
 License: \tab GPL \cr
 }
 }
