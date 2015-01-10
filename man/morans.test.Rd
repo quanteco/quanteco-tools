@@ -36,7 +36,7 @@ diag(D)<-0
 D[lower.tri(D,diag=F)]<-runif(length(D[lower.tri(D,diag=F)]),0,500)
 library(Matrix)
 D<-forceSymmetric(D,uplo="L")
-W<-weighmatrix(D)
+W<-weightmatrix(D)
 y<-sim.autocorrelated(y,0.1,W)
 morans.test(y,W,graph=T)
 }

@@ -21,27 +21,20 @@
 #' D[lower.tri(D,diag=F)]<-runif(length(D[lower.tri(D,diag=F)]),0,500)
 #' library(Matrix)
 #' D<-forceSymmetric(D,uplo="L")
-#' W<-weighmatrix(D)
+#' W<-weightmatrix(D)
 #' y<-sim.autocorrelated(y,0.1,W)
 #' morans.test(y,W,graph=T)
 
 morans.test<-function(X,W,N=999,test=c("positive","negative","two-sided"),graph=F,print.results=T){  
   writeLines("Moran's I test for Autocorrelation")
+  require(pbapply)
   observed<-morans.I(X,W)
+  options("pbapply.pb"="txt")
   if(length(X)<8){
     require(combinat)
-    X1<-unique(permn(X))
+    store<-pbapply(array(unlist(permn(X)),dim=c(length(X),gamma(length(X)+1)))[,1:N],2,function(x)morans.I(x,W))
   }
-  else{
-    X1<-randomize_vector(X,N)
-  }
-  store<-rep(NA,length(X1))
-  pb <- txtProgressBar(min = 0, max = N, style = 3)
-  for(i in 1:length(store)){
-    store[i]<-morans.I(X1[[i]],W)
-    setTxtProgressBar(pb, i)
-  }
-  close(pb)
+  else store<-pbapply(replicate(N,sample(X)),2,function(x)morans.I(x,W))
   if(length(test)>1){test=test[1]}
   if(test=="positive"){
     p.value<-(sum(ifelse(store>observed,1,0))+1)/(length(store)+1)
