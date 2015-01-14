@@ -25,6 +25,17 @@ Tests for significant temporal (TCV) and spatial (SCV) contributions to variance
 \details{
 This function is used to test for signficant temporal (TCV) or spatial (SCV) contributions to spatiotemporal variance in abundance or counts of a species.
 }
+\examples{
+Load data from Percina rex Smith River sites
+Y<-array(c(0,2,1,5,0,0,0,3,
+1,2,4,2,0,0,2,2,0,2,2,0,0,2,
+3,1,5,8,4,2,1,2,2,2,4,3,1,2,
+4,4,3,2),dim=c(8,5))
+rownames(Y)<-c(2006:2012,2014)
+colnames(Y)<-1:5
+stcontrib.test(Y,stat="TCV") #Test for signficant temporal contributions
+stcontrib.test(Y,stat="SCV") #Test for significant spatial contriubitons
+}
 \seealso{
 \code{\link{stvariance}}
 }

@@ -6,4 +6,5 @@ Author: Gregory B. Anderson
 Maintainer: Gregory B. Anderson <quanteco@vt.edu>
 Description: Quantitiative functions and models for Ecology
 License: GPL
+Depends: pbapply,vegan,ggplot2,permute,combinat
 LazyData: true

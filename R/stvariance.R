@@ -8,11 +8,16 @@
 #' @export
 #' @return a list including (1) total spatiotemporal variance, (2) temporal contributions to variance, and (3) spatial contributions to variance
 #' @details This function is used to partition spatiotemporal variance in abundance into: (1) total spatiotemporal variance, (2) temporal contributions to variance, and (3) spatial contributions to variance.
+#' @seealso \code{\link{stcontrib.test}}
 #' @examples
-#' Create Data
-#' Y<-array(c(0,2,1,5,0,0,0,3,1,2,4,2,0,0,2,2,0,2,2,0,0,2,3,1,5,8,4,2,1,2,2,2,4,3,1,2,4,4,3,2),dim=c(8,5))
+#' Load data from Percina rex Smith River sites
+#' Y<-array(c(0,2,1,5,0,0,0,3,
+#' 1,2,4,2,0,0,2,2,0,2,2,0,0,2,
+#' 3,1,5,8,4,2,1,2,2,2,4,3,1,2,
+#' 4,4,3,2),dim=c(8,5))
 #' rownames(Y)<-c(2006:2012,2014)
 #' colnames(Y)<-1:5
+#' stvariance(Y)
 
 stvariance<-function(Y,trans=c("chord","hellinger"),print.results=T,...){
   if(length(trans)>1){trans="chord"}
