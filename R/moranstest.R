@@ -31,8 +31,9 @@ morans.test<-function(X,W,N=999,test=c("positive","negative","two-sided"),graph=
   observed<-morans.I(X,W)
   options("pbapply.pb"="txt")
   if(length(X)<8){
+    if(N>gamma(length(X)+1))writeLines(paste("Only",gamma(length(X)+1),"permutations were used due to small sample size"))
     require(combinat)
-    store<-pbapply(array(unlist(permn(X)),dim=c(length(X),gamma(length(X)+1)))[,1:N],2,function(x)morans.I(x,W))
+    store<-pbapply(array(unlist(permn(X)),dim=c(length(X),gamma(length(X)+1)))[,1:(ifelse(N<=gamma(length(X)+1),N,gamma(length(X)+1)))],2,function(x)morans.I(x,W))
   }
   else store<-pbapply(replicate(N,sample(X)),2,function(x)morans.I(x,W))
   if(length(test)>1){test=test[1]}
@@ -45,8 +46,8 @@ morans.test<-function(X,W,N=999,test=c("positive","negative","two-sided"),graph=
     expected=(-1/(length(X)-1))
   }
   else if(test=="two-sided"){
-    store<-abs(store-mean(store))
     observed<-abs(observed-mean(store))
+    store<-abs(store-mean(store))
     expected=abs(-1/(length(X)-1))
     p.value<-(sum(ifelse(store>=observed,1,0))+1)/(length(store)+1)
   }
