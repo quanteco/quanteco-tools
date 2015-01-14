@@ -37,18 +37,18 @@ morans.test<-function(X,W,N=999,test=c("positive","negative","two-sided"),graph=
   else store<-pbapply(replicate(N,sample(X)),2,function(x)morans.I(x,W))
   if(length(test)>1){test=test[1]}
   if(test=="positive"){
-    p.value<-(sum(ifelse(store>observed,1,0))+1)/(length(store)+1)
+    p.value<-(sum(ifelse(store>=observed,1,0))+1)/(length(store)+1)
     expected=(-1/(length(X)-1))  
   }
   else if(test=="negative"){
-    p.value<-(sum(ifelse(store<observed,1,0))+1)/(length(store)+1)
+    p.value<-(sum(ifelse(store<=observed,1,0))+1)/(length(store)+1)
     expected=(-1/(length(X)-1))
   }
   else if(test=="two-sided"){
     store<-abs(store-mean(store))
-    observed<-observed-mean(store)
+    observed<-abs(observed-mean(store))
     expected=abs(-1/(length(X)-1))
-    p.value<-(sum(ifelse(store>observed,1,0))+1)/(length(store)+1)
+    p.value<-(sum(ifelse(store>=observed,1,0))+1)/(length(store)+1)
   }
   else{stop("test must be at 'positive', 'negative' or 'two-sided'")}
   if(graph==T){
