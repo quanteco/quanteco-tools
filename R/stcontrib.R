@@ -22,20 +22,32 @@
 #' stcontrib.test(Y,stat="SCV") #Test for significant spatial contriubitons
 
 stcontrib.test<-function(Y,trans=c("chord","hellinger"),stat=c('TCV','SCV'),N=999,...){
+  require(combinat)
   if(length(trans)>1) trans="chord" 
   if(length(stat)>1) stat='TCV'
   obs<-stvariance(Y,trans,print.results=F,...)
+  n<-dim(Y)[1]
+  p<-dim(Y)[2]
   if(stat=='TCV'){
-    tmp<-matrix((rowSums(apply(apply(replicate(N,apply(Y,2,
-                                                       sample)),3,function(x) stvariance(x,trans=trans,print.results=F,...)$TCV),2,
-                               function(x) x>=obs$TCV))+1)/(N+1),nrow=1)
+    if(N>gamma(n+1)){
+      writeLines(paste(gamma(n+1),"permutations were used due to small sample size"))
+      tmp<-matrix((rowSums(apply(pbapply(array(unlist(lapply(apply(Y,2,function(x)permn(x)),function(x)array(unlist(x),dim=c(n,gamma(n+1))))),dim=c(n,gamma(n+1),p)),2,function(x)stvariance(x,trans=trans,print.results=F,...)$TCV),2,function(x)x>=obs$TCV))+1)/(gamma(n+1)+1),nrow=1)
+    }
+    else{
+      tmp<-matrix((rowSums(apply(apply(replicate(N,apply(Y,2,sample)),3,function(x) stvariance(x,trans=trans,print.results=F,...)$TCV),2,function(x) x>=obs$TCV))+1)/(N+1),nrow=1)
+    }
     colnames(tmp)<-rownames(Y)
-    
   }
   else if(stat=='SCV'){
-    tmp<-matrix((rowSums(apply(apply(replicate(N,t(apply(Y,1,
-                                                         sample))),3,function(x) stvariance(x,trans=trans,print.results=F,...)$SCV),2,
-                               function(x) x>=obs$SCV))+1)/(N+1),nrow=1)
+    if(N>gamma(p+1)){
+      writeLines(paste(gamma(p+1),"permutations were used due to small sample size"))
+      tmp<-matrix((rowSums(apply( pbapply(array(unlist(lapply(apply(Y,1,permn),function(x)array(unlist(x),dim=c(p,gamma(p+1))))),dim=c(p,gamma(p+1),n)),2,function(x)stvariance(t(x),trans=trans,print.results=F)$SCV),2,function(x)x>obs$SCV))+1)/(gamma(p+1)+1),nrow=1)
+    }
+    else{
+      tmp<-matrix((rowSums(apply(apply(replicate(N,t(apply(Y,1,
+                                                           sample))),3,function(x) stvariance(x,trans=trans,print.results=F,...)$SCV),2,
+                                 function(x) x>=obs$SCV))+1)/(N+1),nrow=1)
+    }
     colnames(tmp)<-colnames(Y)
   }
   else{stop("stat must be 'TCV' or 'SCV'")}

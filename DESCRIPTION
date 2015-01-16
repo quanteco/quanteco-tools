@@ -1,7 +1,7 @@
 Package: quanteco
 Title: Quantitative Ecology in R
-Version: 0.1
-Date: 2014-12-19
+Version: 0.1.2
+Date: 2015-01-16
 Author: Gregory B. Anderson
 Maintainer: Gregory B. Anderson <quanteco@vt.edu>
 Description: Quantitiative functions and models for Ecology
