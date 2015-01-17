@@ -41,7 +41,7 @@ stcontrib.test<-function(Y,trans=c("chord","hellinger"),stat=c('TCV','SCV'),N=99
   else if(stat=='SCV'){
     if(N>gamma(p+1)){
       writeLines(paste(gamma(p+1),"permutations were used due to small sample size"))
-      tmp<-matrix((rowSums(apply( pbapply(array(unlist(lapply(apply(Y,1,permn),function(x)array(unlist(x),dim=c(p,gamma(p+1))))),dim=c(p,gamma(p+1),n)),2,function(x)stvariance(t(x),trans=trans,print.results=F)$SCV),2,function(x)x>obs$SCV))+1)/(gamma(p+1)+1),nrow=1)
+      tmp<-matrix((rowSums(apply( pbapply(array(unlist(lapply(apply(Y,1,permn),function(x)array(unlist(x),dim=c(p,gamma(p+1))))),dim=c(p,gamma(p+1),n)),2,function(x)stvariance(t(x),trans=trans,print.results=F,...)$SCV),2,function(x)x>obs$SCV))+1)/(gamma(p+1)+1),nrow=1)
     }
     else{
       tmp<-matrix((rowSums(apply(apply(replicate(N,t(apply(Y,1,
