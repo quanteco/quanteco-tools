@@ -1,6 +1,6 @@
-#' Distance-based Moran's Eigenvector Maps
+#' Moran's Eigenvector Maps
 #' 
-#' Performs a distance-based Moran's Eigenvector Maps on a given neighborhood matrix (\strong{W})
+#' Performs Moran's Eigenvector Maps on a given neighborhood matrix (\strong{W})
 #' 
 #' @param W a neighborhood matrix
 #' @param X an optional covariate matrix to reduce multicolinearity between created eigenvectors and covariates
@@ -10,11 +10,11 @@
 #' 
 #' This filtering approach was first proposed by Griffith (2000) using a binary connectivity matrix, where the eigenvectors and eigenvalues are extracted from the matrix operation (\strong{I}\eqn{-}\strong{jj}'/\emph{n})\strong{C}(\strong{I}\eqn{-}\strong{jj}'/\emph{n}) where \emph{n} is the number of points in the domain, \strong{j} is  a vector of ones with length \emph{n}, \strong{I} is the identity matrix, and \strong{C} is a connectivity matrix.  Note that this operation can be performed is a connectivity matrix is supplied rather than an weighted neighborhood matrix.  As Griffith and Peres-Neto (2006) show, this is similar to the PCNM procedure proposed by Borcard and Legendre (2002; see below).
 #' 
-#' When this filtering method is employed correctly, the first extracted eigenvector (V1) is a set of values that has the greatest Moran's I coefficient achievable from the connectivity matrix, the second eigenvector represents the second greatest achievable, and so on...
+#' When this filtering method is employed correctly, the first extracted eigenvector is a set of values that has the greatest Moran's I coefficient achievable from the connectivity matrix, the second eigenvector represents the second greatest achievable, and so on...
 #' 
 #' Griffith (2000) suggested that these eigenvectors represent distinct pattern descriptions of latent autocorrelation in the variables.
 #' 
-#' The PCMN filtering method (Borcard and Legendre 2002) performs a similar matrix operation on a truncated weight matrix (\strong{W}) instead of a connectivity matrix (\strong{C}). Dray et al. (2006) further modified this approach and demonstrated that it falls under a class of multivariate approaches known as Moran's Eigenvector Maps. In particular the Borcard and Legendre (2002) approach is known as a distance-based Moran's Eigenvector Map (dbmem).
+#' The PCNM filtering method (Borcard and Legendre 2002) performs a similar matrix operation on a truncated weight matrix (\strong{W}) instead of a connectivity matrix (\strong{C}). Dray et al. (2006) further modified this approach and demonstrated that it falls under a class of multivariate approaches known as Moran's Eigenvector Maps. In particular the Borcard and Legendre (2002) approach is known as a distance-based Moran's Eigenvector Map (dbmem).
 #' 
 #' Also included in this function is the ability to supply a covariate matrix (\strong{X}). This is for the case where you might have multicolinearity issues between \strong{X} and the derived eigenvectors. Griffith (2000) demonstrates this can be performed with a connectivity matrix; however, it's validity for a weight matrix is not known.
 #' @seealso \code{\link{weightmatrix}}, \code{\link{morans.test}}
@@ -34,13 +34,14 @@
 #' D[lower.tri(D,diag=F)]<-runif(length(D[lower.tri(D,diag=F)]),0,500)
 #' library(Matrix)
 #' D<-forceSymmetric(D,uplo="L")
+#' #Distance-based MEM
 #' W<-weighmatrix(D)
-#' out<-dbmem(W) #Perform dbmem
+#' out<-mem(W) #Perform dbmem
 #' out$values #See Moran's I values for each eigenvector
 #' with(out,plot(vectors[,1],type="l")) #Visualize pattern described by eigenvector
 
-dbmem<-function(dmat,X=NULL){
-  W<-as.matrix(dmat)
+mem<-function(W,X=NULL){
+  W<-as.matrix(W)
   diag(W)<-0  
   W<-0.5*(t(W)+W)
   n<-nrow(W)
@@ -67,5 +68,5 @@ dbmem<-function(dmat,X=NULL){
   }
   vectors<-eigen.function$vectors[, value0]/sqrt(1/n)
   values<-eigen.function$values[value0]
-  z<-list(vectors=vectors,values=values,W=dmat)
+  z<-list(vectors=vectors,values=values,W=W)
 }
