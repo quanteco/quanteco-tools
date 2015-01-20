@@ -1,4 +1,4 @@
-#' Calculate Moran's I
+#' Calculate Moran's I for a vector
 #' 
 #' Calculates Moran's I with a given vector (\strong{X}) and a neighborhood matrix (\strong{W})
 #' 

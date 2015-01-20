@@ -2,7 +2,7 @@
 % Please edit documentation in R/moransi.R
 \name{morans.I}
 \alias{morans.I}
-\title{Calculate Moran's I}
+\title{Calculate Moran's I for a vector}
 \usage{
 morans.I(X, W)
 }
