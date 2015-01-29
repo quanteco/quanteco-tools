@@ -33,7 +33,7 @@ Y<-array(c(0,2,1,5,0,0,0,3,
 4,4,3,2),dim=c(8,5))
 rownames(Y)<-c(2006:2012,2014)
 colnames(Y)<-1:5
-stcontrib.test(Y,stat="TCV") #Test for signficant temporal contributions
+stcontrib.test(Y,stat="TCV") #Test for significant temporal contributions
 stcontrib.test(Y,stat="SCV") #Test for significant spatial contriubitons
 }
 \seealso{

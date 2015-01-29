@@ -50,8 +50,8 @@ weightmatrix<-function (D, method = c("dbmem", "linear", "concave-up", "concave-
     if (is.null(beta)) stop("beta must be specified for the method 'concave-up")
     A<-apply(D,2,function(x)1/x^beta)
   }
-  else if (method == "connectviity")A<-B
-  else stop("method must be 'dbmem', 'linear', 'concave-up' or 'concave-down'")
+  else if (method == "connectivity")A<-B
+  else stop("method must be 'dbmem', 'linear', 'concave-up', 'concave-down', or 'connectivity'")
   out <- A * B
   if (diag.mat == 0) {
     diag(out) <- 0
